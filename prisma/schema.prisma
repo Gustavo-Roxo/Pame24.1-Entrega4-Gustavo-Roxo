@@ -1,0 +1,54 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Funcionario{
+  id Int @id @default(autoincrement())
+  nome String 
+  email String
+  senha String
+  sexo Boolean // 0-mulher 1-homem
+  data_nasciemnto String
+  registros Registro[]
+  encomendas Encomenda[]
+}
+
+model Peca{
+  id Int @id @default(autoincrement())
+  nome String 
+  estoque Boolean // 0-não está em estoque 1-está em estoque
+  id_registro Int
+  registro Registro? @relation(fields: [id_registro], references: [id])
+}
+
+model Registro{
+  id Int @id @default(autoincrement())
+  data String
+  tipo Boolean // 0-entrada 1-saída
+  id_funcionario Int
+  funcionario Funcionario? @relation(fields: [id_funcionario], references: [id])
+  pecas Peca[] 
+}
+
+model Encomenda{
+  id Int @id @default(autoincrement())
+  quantidade Int
+  status String
+  id_pedra_metal Int? @unique
+  pedra_metal Pedra_Metal? @relation(fields: [id_pedra_metal], references: [id])
+  id_funcionario Int
+  funcionario Funcionario? @relation(fields: [id_funcionario], references: [id])
+}
+
+model Pedra_Metal{
+  id Int @id @default(autoincrement())
+  nome String
+  encomenda Encomenda?
+}
+

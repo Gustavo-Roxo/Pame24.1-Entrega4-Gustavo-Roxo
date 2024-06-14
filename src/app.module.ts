@@ -6,10 +6,11 @@ import { RegistroModule } from './registro/registro.module';
 import { PeçaModule } from './peça/peça.module';
 import { EncomendaModule } from './encomenda/encomenda.module';
 import { PedraMetalModule } from './pedra_metal/pedra_metal.module';
+import { PrismaService } from './prisma/prisma.service';
 
 @Module({
   imports: [FuncionarioModule, RegistroModule, PeçaModule, EncomendaModule,PedraMetalModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}
