@@ -1,1 +1,3 @@
-export class CreatePedraMetalDto {}
+export class CreatePedraMetalDto {
+    nome:string
+}

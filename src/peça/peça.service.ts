@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePeçaDto } from './dto/create-peça.dto';
 import { UpdatePeçaDto } from './dto/update-peça.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class PeçaService {
-  create(createPeçaDto: CreatePeçaDto) {
-    return 'This action adds a new peça';
+  constructor (private readonly prisma:PrismaService){
+
+  }
+
+  create(data: CreatePeçaDto) {
+    const usuarioCriado = this.prisma.peca.create({data});
+    return usuarioCriado;
   }
 
   findAll() {
-    return `This action returns all peça`;
+    const usuarios = this.prisma.peca.findMany()
+    return usuarios
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} peça`;
+    const usuario = this.prisma.peca.findUnique({ where: {id} })
+    return usuario
   }
 
   update(id: number, updatePeçaDto: UpdatePeçaDto) {
-    return `This action updates a #${id} peça`;
+    const usuario = this.prisma.peca.update({
+      where: {id},
+      data: updatePeçaDto,
+    })
+    return usuario
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} peça`;
+  async remove(id: number) {
+    await this.prisma.peca.delete({where:{id}})
+    return "Peça removida com sucesso!"
   }
 }

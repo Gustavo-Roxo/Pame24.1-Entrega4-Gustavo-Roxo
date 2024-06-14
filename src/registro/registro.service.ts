@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRegistroDto } from './dto/create-registro.dto';
 import { UpdateRegistroDto } from './dto/update-registro.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class RegistroService {
-  create(createRegistroDto: CreateRegistroDto) {
-    return 'This action adds a new registro';
+  constructor (private readonly prisma: PrismaService){
+
+  }
+
+  create(data: CreateRegistroDto) {
+    const usuarioCriado = this.prisma.registro.create({data});
+    return usuarioCriado;
   }
 
   findAll() {
-    return `This action returns all registro`;
+    const usuarios = this.prisma.registro.findMany()
+    return usuarios
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} registro`;
+    const usuario = this.prisma.registro.findUnique({ where: {id} })
+    return usuario
   }
 
   update(id: number, updateRegistroDto: UpdateRegistroDto) {
-    return `This action updates a #${id} registro`;
+    const usuario = this.prisma.registro.update({
+      where: {id},
+      data: updateRegistroDto,
+    })
+    return usuario
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} registro`;
+  async remove(id: number) {
+    await this.prisma.registro.delete({where:{id}})
+    return "Registro removido com sucesso!"
   }
 }

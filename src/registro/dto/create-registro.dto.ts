@@ -1,1 +1,5 @@
-export class CreateRegistroDto {}
+export class CreateRegistroDto {
+    data:string;
+    tipo:boolean;
+    id_funcionario:number;
+}
